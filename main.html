@@ -2,9 +2,162 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Test_Project</title>
+
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+
+    <style>
+        body{
+            background-color: #80808075;
+            margin: 0;
+            padding: 0;
+        }
+        #central-panel{
+            margin:5%;
+            background-color: white;
+            width: 90%;
+            height: 1500px;
+        }
+        #root{
+            background-color: #adff2f42;
+            height: 100%;
+            width: 48%;
+            float:left;
+        }
+        #root_2{
+            background-color: #0080005e;
+            height: 100%;
+            width: 48%;
+            float: right;
+        }
+        #inp_1{
+            width: 50%;
+            height: 20px;
+            margin-left: 19%;
+        }
+        #inp_2{
+            width: 50%;
+            height: 20px;
+            margin-left: 15%;
+        }
+        #log-menu{
+            margin:5%;
+            width: 90%;
+            height: 90%;
+        }
+        #button-log{
+            margin-left: 45%;
+            height: 40px;
+        }
+        #panel{
+            width: 80%;
+            margin-left:10%;
+            margin-top: 5%;
+            height: 130px;
+            background-color: green;
+        }
+    </style>
 </head>
 <body>
+<div id="central-panel">
+    <div id="root">
 
+    </div>
+    <div id="root_2">
+
+    </div>
+</div>
+
+
+
+
+
+
+<script type="text/babel">
+
+    class App extends React.Component{
+        constructor(props) {
+            super(props);
+
+            this.state = {
+                login: 'ilpanard58@gmail.com',
+                password: 'Qwerty'
+            };
+            this.map = new Map
+            this.handleChange = this.handleChange.bind(this);
+            this.submitData = this.submitData.bind(this);
+        }
+
+        handleChange(event) {
+
+            const value = event.target.value
+            const name = event.target.name;
+
+            this.setState({
+                [name]: value
+            });
+        }
+
+        submitData(event){
+           //console.log('Отправленное имя: ' + this.state.login);
+           // console.log('Password:' + this.state.password)
+            if (!this.map.has(this.state.login)){
+                this.map.set(this.state.login , this.state.password)
+                root_2.render(<SpawnPanel login = {this.state.login} password = {this.state.password}/>)
+            }else{
+                console.log(`There is suck a key`)
+            }
+
+            console.log(this.map)
+            event.preventDefault();
+        }
+        render(){
+            return(
+                    <div id="log-menu">
+                        <form id="">
+
+                            <p>Login:<input name="login" type="text" onChange={this.handleChange} value={this.state.login}  id="inp_1"  /></p>
+                            <p>Password:<input name="password" type="text" onChange={this.handleChange} value={this.state.password} id="inp_2"  /></p>
+                            <button id="button-log" onClick={this.submitData}>
+                                Создать
+                            </button>
+
+
+                        </form>
+                    </div>
+            )
+        }
+    }
+
+    class SpawnPanel extends React.Component{
+        constructor(props) {
+            super(props);
+            this.login = props.login
+            this.password = props.password
+        }
+        render(){
+            console.log(this.login + ' ' + this.password)
+            return (
+                <div>
+                    <div id="panel">
+                        <h2>login:{this.login}</h2>
+                        <h2>Password: {this.password}</h2>
+                    </div>
+
+                </div>
+            )
+        }
+    }
+
+    const root_2 = ReactDOM.createRoot(document.getElementById('root_2'));
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+
+    root.render(<App/>)
+</script>
+<!--<script src="button.js" type="text/babel"></script>-->
 </body>
 </html>
+
