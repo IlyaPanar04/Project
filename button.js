@@ -121,3 +121,11 @@
     const root = ReactDOM.createRoot(document.getElementById('root'));
     root.render(<Toggle />);*/
 
+
+
+
+/*<div id="panel">
+                            <p>login:<input name="login" type="text"  value={log}    /></p>
+                            <p>Password: <input name="password" type="text"   value={map.get(log)}    /></p>
+                        </div>
+*/
