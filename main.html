@@ -3,87 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Test_Project</title>
-
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-
-
-    <style>
-        body{
-            background-color: #80808075;
-            margin: 0;
-            padding: 0;
-        }
-        #central-panel{
-            margin:7%;
-            background-color: white;
-            width: 85%;
-            height: 1500px;
-        }
-        #root{
-            background-color: #adff2f42;
-            height: 100%;
-            width: 48%;
-            float:left;
-        }
-        #root_2{
-            background-color: #0080005e;
-            height: 100%;
-            width: 48%;
-            float: right;
-        }
-        #inp_1{
-            width: 50%;
-            height: 20px;
-            margin-left: 19%;
-        }
-        #inp_2{
-            width: 50%;
-            height: 20px;
-            margin-left: 15%;
-        }
-        #log-menu{
-            margin:5%;
-            width: 90%;
-            height: 90%;
-        }
-        #button-log{
-            margin-left: 45%;
-            height: 40px;
-        }
-        #panel{
-            width: 80%;
-            margin-left:10%;
-            margin-top: 5%;
-            height: 130px;
-            background-color: #ffffff00;
-
-            transition: all .2s ease;
-        }
-        #panel p{
-            font-size: 17px;
-            font-family: Calibri;
-        }
-
-
-        #panel:hover{
-            opacity: 1;
-            box-shadow: 0px 0px 14px 0px black;
-            background-color:#ffffffb8;
-        }
-        #button-delete{
-            float: right;
-            height: 35px;
-            width: 90px;
-
-        }
-        #button-change{
-            float: right;
-            height: 35px;
-            width: 90px;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="style.css" >
 </head>
 <body>
 <div id="central-panel">
@@ -94,11 +17,6 @@
 
     </div>
 </div>
-
-
-
-
-
 
 <script type="text/babel">
     let map = new Map
@@ -139,7 +57,7 @@
         render(){
             return(
                     <div id="log-menu">
-                        <form id="">
+                        <form>
                             <p>Login:<input name="login" type="text" onChange={this.handleChange} value={this.state.login}  id="inp_1"  /></p>
                             <p>Password:<input name="password" type="text" onChange={this.handleChange} value={this.state.password} id="inp_2"  /></p>
                             <button id="button-log"  onClick={this.submitData}>
@@ -152,7 +70,15 @@
     }
 
     class SpawnPanel extends React.Component{
+        constructor(props) {
+            super(props);
+            this.state = {
+                login: ' new login ',
+                password: '1234'
+            };
 
+            this.changeData = this.changeData.bind(this);
+        }
         deleteData(value,index){
             map.delete(value)
             massLogin.splice(index , 1)
@@ -161,24 +87,50 @@
             console.log(map)
             root_2.render(<SpawnPanel />)
         }
-        changeData(){}
-        buttonChange(){}
+        changeData(event){
+            const value = event.target.value
+            const name = event.target.name;
+
+            this.setState({
+                [name]: value
+            });
+        }
+        buttonChange(value , index){
+            if (!map.has(this.state.login)){
+                massLogin.splice(index , 1,this.state.login)
+                map.delete(value)
+                map.set(this.state.login , this.state.password)
+                root_2.render(<SpawnPanel />)
+            }
+        }
+        empty(){}
         render() {
             return (
                 <div>
-                    {massLogin.map((log , index) =>
-                        <div id="panel">
+                    <div id="changePanel">
+                        <a id="a_change_login"> change login:</a>
+                        <input name="login" id="change-login" type="text" onChange={this.changeData} value={this.state.login}/>
+                        <a id="a_change_password"> change pass:</a>
+                        <input name="password" id="change-password" type="text" onChange={this.changeData} value= {this.state.password}/>
+                    </div>
 
-                                <p>login:<input name="login" type="text" onChange={this.changeData} value={log}/></p>
-                                <p>Password: <input name="password"  onChange={this.changeData} type="text" value={map.get(log)}/></p>
-                                <button id="button-change" onClick={() => this.deleteData(log , index)}>
+                    {massLogin.map((log , index) =>
+
+                        <div id="panel">
+                                <p>
+                                    login:
+                                    <input  type="text" onChange={this.empty} value={log}/>
+                                </p>
+                                <p>
+                                    Password:
+                                    <input  type="text" onChange={this.empty} value={map.get(log)}/>
+                                </p>
+                                <button id="button-delete" onClick={() => this.deleteData(log , index)}>
                                     Delete
                                 </button>
-                                <button id="button-delete"   onClick={this.buttonChange}>
+                                <button id="button-change" onClick={() => this.buttonChange(log , index)}>
                                     Change
                                 </button>
-
-
                         </div>
                     )}
                 </div>
@@ -188,12 +140,9 @@
 
     const root_2 = ReactDOM.createRoot(document.getElementById('root_2'));
     const root = ReactDOM.createRoot(document.getElementById('root'));
-
     root.render(<App/>)
-
-
 </script>
-<!--<script src="button.js" type="text/babel"></script>-->
+
 </body>
 </html>
 
